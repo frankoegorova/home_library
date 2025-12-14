@@ -1,222 +1,91 @@
-<mxfile host="app.diagrams.net">
-  <diagram name="ER-Диаграмма БД 'Домашняя библиотека'" id="RZPy7LJ9Z-LHqu28oYYm">
-    <mxGraphModel dx="1462" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        
-        <!-- ЗАГОЛОВОК -->
-        <mxCell id="title" value="&lt;b&gt;ER-ДИАГРАММА БАЗЫ ДАННЫХ&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;«Домашняя библиотека»&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="300" y="20" width="250" height="40" as="geometry" />
-        </mxCell>
-        
-        <!-- ============ СПРАВОЧНЫЕ ТАБЛИЦЫ (ГОЛУБЫЕ) ============ -->
-        
-        <!-- AGE_RATINGS -->
-        <mxCell id="age_ratings" value="&lt;b&gt;AGE_RATINGS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;code&lt;br&gt;min_age&lt;br&gt;description" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="50" y="80" width="120" height="100" as="geometry" />
-        </mxCell>
-        
-        <!-- GENRES -->
-        <mxCell id="genres" value="&lt;b&gt;GENRES&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;name&lt;br&gt;description" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="50" y="200" width="120" height="80" as="geometry" />
-        </mxCell>
-        
-        <!-- LOCATIONS -->
-        <mxCell id="locations" value="&lt;b&gt;LOCATIONS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;room&lt;br&gt;furniture&lt;br&gt;shelf&lt;br&gt;description" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="50" y="300" width="120" height="100" as="geometry" />
-        </mxCell>
-        
-        <!-- ============ ОСНОВНЫЕ ТАБЛИЦЫ (ЗЕЛЕНЫЕ) ============ -->
-        
-        <!-- BOOKS -->
-        <mxCell id="books" value="&lt;b&gt;BOOKS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;title&lt;br&gt;publication_year&lt;br&gt;publisher&lt;br&gt;FK age_rating_id&lt;br&gt;isbn&lt;br&gt;created_at" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="220" y="80" width="130" height="130" as="geometry" />
-        </mxCell>
-        
-        <!-- AUTHORS -->
-        <mxCell id="authors" value="&lt;b&gt;AUTHORS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;last_name&lt;br&gt;first_name&lt;br&gt;birth_year&lt;br&gt;country&lt;br&gt;special_notes" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="220" y="230" width="130" height="110" as="geometry" />
-        </mxCell>
-        
-        <!-- USERS -->
-        <mxCell id="users" value="&lt;b&gt;USERS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;last_name&lt;br&gt;first_name&lt;br&gt;birth_date&lt;br&gt;email&lt;br&gt;role" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="220" y="360" width="130" height="110" as="geometry" />
-        </mxCell>
-        
-        <!-- COPIES -->
-        <mxCell id="copies" value="&lt;b&gt;COPIES&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;FK book_id&lt;br&gt;inventory_number&lt;br&gt;FK location_id&lt;br&gt;condition&lt;br&gt;is_available" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="220" y="490" width="130" height="110" as="geometry" />
-        </mxCell>
-        
-        <!-- ============ СВЯЗУЮЩИЕ ТАБЛИЦЫ (ЖЕЛТЫЕ) ============ -->
-        
-        <!-- BOOK_AUTHORS -->
-        <mxCell id="book_authors" value="&lt;b&gt;BOOK_AUTHORS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;FK book_id&lt;br&gt;FK author_id" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="400" y="120" width="130" height="70" as="geometry" />
-        </mxCell>
-        
-        <!-- BOOK_GENRES -->
-        <mxCell id="book_genres" value="&lt;b&gt;BOOK_GENRES&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;FK book_id&lt;br&gt;FK genre_id" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="400" y="210" width="130" height="70" as="geometry" />
-        </mxCell>
-        
-        <!-- ============ ОПЕРАЦИОННЫЕ ТАБЛИЦЫ (РОЗОВЫЕ) ============ -->
-        
-        <!-- LOANS -->
-        <mxCell id="loans" value="&lt;b&gt;LOANS&lt;/b&gt;&lt;br&gt;PK id&lt;br&gt;FK copy_id&lt;br&gt;FK user_id&lt;br&gt;FK librarian_id&lt;br&gt;loan_date&lt;br&gt;due_date&lt;br&gt;age_check_passed" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="400" y="300" width="130" height="110" as="geometry" />
-        </mxCell>
-        
-        <!-- ============ СВЯЗИ МЕЖДУ ТАБЛИЦАМИ ============ -->
-        
-        <!-- Связь: BOOKS → AGE_RATINGS (N:1) -->
-        <mxCell id="link1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.4;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="age_ratings">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link1_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link1">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link1_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link1">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: BOOKS → BOOK_AUTHORS (1:N) -->
-        <mxCell id="link2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="book_authors">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link2_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link2">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link2_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link2">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: BOOK_AUTHORS → AUTHORS (N:1) -->
-        <mxCell id="link3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="book_authors" target="authors">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link3_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link3">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link3_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link3">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: BOOKS → BOOK_GENRES (1:N) -->
-        <mxCell id="link4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="book_genres">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- Связь: BOOK_GENRES → GENRES (N:1) -->
-        <mxCell id="link5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="book_genres" target="genres">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        
-        <!-- Связь: BOOKS → COPIES (1:N) -->
-        <mxCell id="link6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="copies">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link6_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link6">
-          <mxGeometry x="0.5" y="-0.4" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link6_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link6">
-          <mxGeometry x="0.5" y="1.4" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: COPIES → LOCATIONS (N:1) -->
-        <mxCell id="link7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="copies" target="locations">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="190" y="545" />
-              <mxPoint x="190" y="350" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link7_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link7">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link7_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link7">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: COPIES → LOANS (1:N) -->
-        <mxCell id="link8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="copies" target="loans">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link8_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link8">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link8_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link8">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: USERS → LOANS (1:N) -->
-        <mxCell id="link9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="users" target="loans">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="link9_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link9">
-          <mxGeometry x="-0.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link9_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link9">
-          <mxGeometry x="1.3" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Связь: LOANS → USERS (librarian_id) N:1 -->
-        <mxCell id="link10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.7;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="loans" target="users">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="465" y="300" />
-              <mxPoint x="465" y="330" />
-              <mxPoint x="285" y="330" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link10_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link10">
-          <mxGeometry x="0.1" y="-0.2" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="link10_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link10">
-          <mxGeometry x="0.9" y="1.2" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- ЛЕГЕНДА -->
-        <mxCell id="legend" value="&lt;b&gt;УСЛОВНЫЕ ОБОЗНАЧЕНИЯ&lt;/b&gt;&lt;hr&gt;PK - Первичный ключ&lt;br&gt;FK - Внешний ключ&lt;br&gt;&lt;br&gt;&lt;b&gt;ЦВЕТА:&lt;/b&gt;&lt;br&gt;█ Справочные таблицы&lt;br&gt;█ Основные таблицы&lt;br&gt;█ Связующие таблицы&lt;br&gt;█ Операционные таблицы&lt;br&gt;&lt;br&gt;&lt;b&gt;СВЯЗИ:&lt;/b&gt;&lt;br&gt;1 - один (обязательно)&lt;br&gt;N - много (0..N)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="570" y="80" width="150" height="180" as="geometry" />
-        </mxCell>
-        
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>
+erDiagram
+
+BOOK ||--o{ COPY : has
+BOOK }o--o{ AUTHOR : written_by
+BOOK }o--o{ GENRE : classified_as
+BOOK }o--|| AGE_RATING : rated_as
+
+COPY }o--|| LOCATION : stored_in
+COPY ||--o{ LOAN : involved_in
+USER ||--o{ LOAN : makes
+
+BOOK {
+    int book_id PK
+    int rating_id FK
+    string title
+    string original_title
+    int publication_year
+    string publisher
+    int page_count
+    text description
+    date created_at
+}
+
+AUTHOR {
+    int author_id PK
+    string last_name
+    string first_name
+    string middle_name
+    int birth_year
+    int death_year
+    string country
+    string special_notes
+    string author_type
+}
+
+GENRE {
+    int genre_id PK
+    string name
+    text description
+}
+
+AGE_RATING {
+    int rating_id PK
+    string code
+    int min_age
+    text description
+}
+
+COPY {
+    int copy_id PK
+    int book_id FK
+    int location_id FK
+    string inventory_number
+    date acquisition_date
+    numeric purchase_price
+    numeric estimated_value
+    string condition
+    text special_notes
+    boolean is_available
+}
+
+LOCATION {
+    int location_id PK
+    string room
+    string furniture
+    string shelf
+    text description
+}
+
+USER {
+    int user_id PK
+    string last_name
+    string first_name
+    string middle_name
+    date birth_date
+    string email
+    string phone
+    string role
+    boolean is_active
+}
+
+LOAN {
+    int loan_id PK
+    int copy_id FK
+    int user_id FK
+    date loan_date
+    date due_date
+    date return_date
+    boolean age_check_passed
+    text notes
+}
