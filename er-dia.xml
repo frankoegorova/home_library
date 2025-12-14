@@ -1,141 +1,222 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database name="HomeLibraryDB">
-  <tables>
-    
-    <!-- СПРАВОЧНЫЕ ТАБЛИЦЫ -->
-    <table name="age_ratings">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="code" type="VARCHAR(10)" constraint="NOT NULL">Код рейтинга</column>
-        <column name="min_age" type="INTEGER" constraint="NOT NULL">Минимальный возраст</column>
-        <column name="description" type="TEXT">Описание</column>
-      </columns>
-    </table>
-    
-    <table name="genres">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="name" type="VARCHAR(100)" constraint="NOT NULL">Название жанра</column>
-        <column name="description" type="TEXT">Описание</column>
-      </columns>
-    </table>
-    
-    <table name="locations">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="room" type="VARCHAR(50)">Комната</column>
-        <column name="furniture" type="VARCHAR(50)">Шкаф/Стеллаж</column>
-        <column name="shelf" type="VARCHAR(50)">Полка</column>
-        <column name="description" type="TEXT">Описание места</column>
-      </columns>
-    </table>
-    
-    <!-- ОСНОВНЫЕ ТАБЛИЦЫ -->
-    <table name="books">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="title" type="VARCHAR(200)" constraint="NOT NULL">Название</column>
-        <column name="original_title" type="VARCHAR(200)">Оригинальное название</column>
-        <column name="publication_year" type="INTEGER">Год издания</column>
-        <column name="publisher" type="VARCHAR(150)">Издательство</column>
-        <column name="page_count" type="INTEGER">Количество страниц</column>
-        <column name="description" type="TEXT">Описание</column>
-        <column name="age_rating_id" type="INTEGER" constraint="FK → age_ratings.id">Возрастной рейтинг</column>
-        <column name="isbn" type="VARCHAR(20)">ISBN</column>
-        <column name="created_at" type="TIMESTAMP" default="CURRENT_TIMESTAMP">Дата добавления</column>
-      </columns>
-    </table>
-    
-    <table name="authors">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="last_name" type="VARCHAR(100)">Фамилия</column>
-        <column name="first_name" type="VARCHAR(100)">Имя</column>
-        <column name="middle_name" type="VARCHAR(100)">Отчество</column>
-        <column name="birth_year" type="INTEGER">Год рождения</column>
-        <column name="death_year" type="INTEGER">Год смерти</column>
-        <column name="country" type="VARCHAR(100)">Страна</column>
-        <column name="special_notes" type="TEXT">Особые пометки</column>
-        <column name="author_type" type="VARCHAR(50)">Тип авторства</column>
-      </columns>
-    </table>
-    
-    <table name="users">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="last_name" type="VARCHAR(100)" constraint="NOT NULL">Фамилия</column>
-        <column name="first_name" type="VARCHAR(100)" constraint="NOT NULL">Имя</column>
-        <column name="middle_name" type="VARCHAR(100)">Отчество</column>
-        <column name="birth_date" type="DATE" constraint="NOT NULL">Дата рождения</column>
-        <column name="email" type="VARCHAR(150)">Email</column>
-        <column name="phone" type="VARCHAR(20)">Телефон</column>
-        <column name="role" type="VARCHAR(20)" default="'guest'">Роль</column>
-        <column name="is_active" type="BOOLEAN" default="true">Активен</column>
-        <column name="created_at" type="TIMESTAMP" default="CURRENT_TIMESTAMP">Дата регистрации</column>
-      </columns>
-    </table>
-    
-    <table name="copies">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="book_id" type="INTEGER" constraint="FK → books.id, NOT NULL">Книга</column>
-        <column name="inventory_number" type="VARCHAR(50)" constraint="UNIQUE, NOT NULL">Инвентарный номер</column>
-        <column name="location_id" type="INTEGER" constraint="FK → locations.id">Место хранения</column>
-        <column name="acquisition_date" type="DATE">Дата поступления</column>
-        <column name="purchase_price" type="DECIMAL(10,2)">Стоимость приобретения</column>
-        <column name="estimated_value" type="DECIMAL(10,2)">Оценочная стоимость</column>
-        <column name="condition" type="VARCHAR(20)">Состояние</column>
-        <column name="special_notes" type="TEXT">Особые отметки</column>
-        <column name="is_available" type="BOOLEAN" default="true">Доступен</column>
-      </columns>
-    </table>
-    
-    <!-- СВЯЗУЮЩИЕ ТАБЛИЦЫ -->
-    <table name="book_authors">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="book_id" type="INTEGER" constraint="FK → books.id, NOT NULL">Книга</column>
-        <column name="author_id" type="INTEGER" constraint="FK → authors.id, NOT NULL">Автор</column>
-        <column name="author_order" type="INTEGER" default="1">Порядок авторов</column>
-      </columns>
-    </table>
-    
-    <table name="book_genres">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="book_id" type="INTEGER" constraint="FK → books.id, NOT NULL">Книга</column>
-        <column name="genre_id" type="INTEGER" constraint="FK → genres.id, NOT NULL">Жанр</column>
-      </columns>
-    </table>
-    
-    <!-- ОПЕРАЦИОННЫЕ ТАБЛИЦЫ -->
-    <table name="loans">
-      <columns>
-        <column name="id" type="SERIAL" constraint="PK">ID</column>
-        <column name="copy_id" type="INTEGER" constraint="FK → copies.id, NOT NULL">Экземпляр</column>
-        <column name="user_id" type="INTEGER" constraint="FK → users.id, NOT NULL">Читатель</column>
-        <column name="librarian_id" type="INTEGER" constraint="FK → users.id, NOT NULL">Библиотекарь</column>
-        <column name="loan_date" type="DATE" constraint="NOT NULL">Дата выдачи</column>
-        <column name="due_date" type="DATE">Срок возврата</column>
-        <column name="return_date" type="DATE">Дата возврата</column>
-        <column name="age_check_passed" type="BOOLEAN" default="false">Проверка возраста</column>
-        <column name="notes" type="TEXT">Примечания</column>
-      </columns>
-    </table>
-    
-  </tables>
-  
-  <relationships>
-    <relationship from="books.age_rating_id" to="age_ratings.id" type="N:1" />
-    <relationship from="copies.book_id" to="books.id" type="N:1" />
-    <relationship from="copies.location_id" to="locations.id" type="N:1" />
-    <relationship from="book_authors.book_id" to="books.id" type="M:N" />
-    <relationship from="book_authors.author_id" to="authors.id" type="M:N" />
-    <relationship from="book_genres.book_id" to="books.id" type="M:N" />
-    <relationship from="book_genres.genre_id" to="genres.id" type="M:N" />
-    <relationship from="loans.copy_id" to="copies.id" type="1:N" />
-    <relationship from="loans.user_id" to="users.id" type="1:N" />
-    <relationship from="loans.librarian_id" to="users.id" type="N:1" />
-  </relationships>
-  
-</database>>
+<mxfile host="app.diagrams.net">
+  <diagram name="ER-Диаграмма БД 'Домашняя библиотека'" id="RZPy7LJ9Z-LHqu28oYYm">
+    <mxGraphModel dx="1462" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ЗАГОЛОВОК -->
+        <mxCell id="title" value="&lt;b&gt;ER-ДИАГРАММА БАЗЫ ДАННЫХ&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;«Домашняя библиотека»&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="250" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- ============ СПРАВОЧНЫЕ ТАБЛИЦЫ ============ -->
+        
+        <!-- AGE_RATINGS -->
+        <mxCell id="age_ratings" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#dae8fc' align='center'&gt;&lt;b&gt;AGE_RATINGS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;code&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;min_age&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;description&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="80" width="120" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- GENRES -->
+        <mxCell id="genres" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#dae8fc' align='center'&gt;&lt;b&gt;GENRES&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;name&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;description&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="210" width="120" height="90" as="geometry" />
+        </mxCell>
+        
+        <!-- LOCATIONS -->
+        <mxCell id="locations" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#dae8fc' align='center'&gt;&lt;b&gt;LOCATIONS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;room&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;furniture&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;shelf&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;description&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="320" width="120" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- ============ ОСНОВНЫЕ ТАБЛИЦЫ ============ -->
+        
+        <!-- BOOKS -->
+        <mxCell id="books" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#d5e8d4' align='center'&gt;&lt;b&gt;BOOKS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;title&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;publication_year&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;publisher&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;age_rating_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;isbn&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;created_at&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="80" width="130" height="140" as="geometry" />
+        </mxCell>
+        
+        <!-- AUTHORS -->
+        <mxCell id="authors" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#d5e8d4' align='center'&gt;&lt;b&gt;AUTHORS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;last_name&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;first_name&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;birth_year&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;country&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;special_notes&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="240" width="130" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- USERS -->
+        <mxCell id="users" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#d5e8d4' align='center'&gt;&lt;b&gt;USERS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;last_name&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;first_name&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;birth_date&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;email&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;role&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="380" width="130" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- COPIES -->
+        <mxCell id="copies" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#d5e8d4' align='center'&gt;&lt;b&gt;COPIES&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;book_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;inventory_number&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;location_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;condition&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;is_available&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220" y="520" width="130" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- ============ СВЯЗУЮЩИЕ ТАБЛИЦЫ ============ -->
+        
+        <!-- BOOK_AUTHORS -->
+        <mxCell id="book_authors" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#fff2cc' align='center'&gt;&lt;b&gt;BOOK_AUTHORS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;book_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;author_id&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="400" y="120" width="130" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- BOOK_GENRES -->
+        <mxCell id="book_genres" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#fff2cc' align='center'&gt;&lt;b&gt;BOOK_GENRES&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;book_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;genre_id&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="400" y="220" width="130" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- ============ ОПЕРАЦИОННЫЕ ТАБЛИЦЫ ============ -->
+        
+        <!-- LOANS -->
+        <mxCell id="loans" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse'&gt;&lt;tr&gt;&lt;td colspan='2' bgcolor='#f8cecc' align='center'&gt;&lt;b&gt;LOANS&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;copy_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;user_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;librarian_id&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;loan_date&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;due_date&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;age_check_passed&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="400" y="320" width="130" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- ============ СВЯЗИ МЕЖДУ ТАБЛИЦАМИ ============ -->
+        
+        <!-- Связь: BOOKS → AGE_RATINGS (N:1) -->
+        <mxCell id="link1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.4;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="age_ratings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link1_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link1">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link1_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link1">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: BOOKS → BOOK_AUTHORS (1:N) -->
+        <mxCell id="link2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="book_authors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link2_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link2">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link2_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link2">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: BOOK_AUTHORS → AUTHORS (N:1) -->
+        <mxCell id="link3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="book_authors" target="authors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link3_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link3">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link3_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link3">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: BOOKS → BOOK_GENRES (1:N) -->
+        <mxCell id="link4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="book_genres">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Связь: BOOK_GENRES → GENRES (N:1) -->
+        <mxCell id="link5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="book_genres" target="genres">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Связь: BOOKS → COPIES (1:N) -->
+        <mxCell id="link6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="books" target="copies">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link6_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link6">
+          <mxGeometry x="0.5" y="-0.4" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link6_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link6">
+          <mxGeometry x="0.5" y="1.4" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: COPIES → LOCATIONS (N:1) -->
+        <mxCell id="link7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="copies" target="locations">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="580" />
+              <mxPoint x="190" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link7_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link7">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link7_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link7">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: COPIES → LOANS (1:N) -->
+        <mxCell id="link8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="copies" target="loans">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link8_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link8">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link8_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link8">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: USERS → LOANS (1:N) -->
+        <mxCell id="link9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="users" target="loans">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="link9_label" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link9">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link9_label2" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link9">
+          <mxGeometry x="1.3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Связь: USERS → LOANS (librarian_id) N:1 -->
+        <mxCell id="link10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.7;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="loans" target="users">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="320" />
+              <mxPoint x="465" y="350" />
+              <mxPoint x="285" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link10_label" value="N" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link10">
+          <mxGeometry x="0.1" y="-0.2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="link10_label2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="link10">
+          <mxGeometry x="0.9" y="1.2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ЛЕГЕНДА -->
+        <mxCell id="legend" value="&lt;table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse;font-size:10px'&gt;&lt;tr&gt;&lt;td colspan='2' align='center'&gt;&lt;b&gt;УСЛОВНЫЕ ОБОЗНАЧЕНИЯ&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PK&lt;/td&gt;&lt;td&gt;Первичный ключ&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FK&lt;/td&gt;&lt;td&gt;Внешний ключ&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td bgcolor='#dae8fc'&gt;&lt;/td&gt;&lt;td&gt;Справочные таблицы&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td bgcolor='#d5e8d4'&gt;&lt;/td&gt;&lt;td&gt;Основные таблицы&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td bgcolor='#fff2cc'&gt;&lt;/td&gt;&lt;td&gt;Связующие таблицы&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td bgcolor='#f8cecc'&gt;&lt;/td&gt;&lt;td&gt;Операционные таблицы&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;один (обязательно)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;N&lt;/td&gt;&lt;td&gt;много (0..N)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=table;html=1;rounded=0;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="570" y="80" width="150" height="200" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
